@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"mouse"
+	"mouse/plugins/scripts/javascript"
 	"sync"
 )
 
@@ -36,6 +37,12 @@ func main() {
 			}
 		*/
 	})
+
+	m.Use(javascript.NewPlugin(m, &javascript.Config{
+		Pattern:        "scripts/javascript/*.js",
+		ContinuousLoad: true,
+		EventTypes:     []string{"PRIVMSG"},
+	}))
 
 	m.Join("#test")
 

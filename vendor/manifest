@@ -2,9 +2,21 @@
 	"version": 0,
 	"dependencies": [
 		{
+			"importpath": "github.com/robertkrimen/otto",
+			"repository": "https://github.com/robertkrimen/otto",
+			"revision": "3e7ca9f1929a7f90c674390834e6495bcd09836a",
+			"branch": "master"
+		},
+		{
 			"importpath": "gopkg.in/sorcix/irc.v1",
 			"repository": "https://gopkg.in/sorcix/irc.v1",
 			"revision": "3ea169d06a23de0625c1afedfcbb5f6180876ea0",
+			"branch": "master"
+		},
+		{
+			"importpath": "gopkg.in/sourcemap.v1",
+			"repository": "https://gopkg.in/sourcemap.v1",
+			"revision": "eef8f47ab679652a7d3a4ee34c34314d255d2536",
 			"branch": "master"
 		}
 	]
