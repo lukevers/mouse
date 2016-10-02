@@ -3,5 +3,5 @@ if (irc.event.command == 'PRIVMSG') {
 }
 
 function run() {
-    console.log('run');
+    // TODO
 }
