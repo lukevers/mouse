@@ -1,0 +1,11 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "gopkg.in/sorcix/irc.v1",
+			"repository": "https://gopkg.in/sorcix/irc.v1",
+			"revision": "3ea169d06a23de0625c1afedfcbb5f6180876ea0",
+			"branch": "master"
+		}
+	]
+}
