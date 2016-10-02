@@ -80,14 +80,14 @@ func (plugin *Plugin) load() (err error) {
 func (plugin *Plugin) register() {
 	// Create a global IRC object
 	plugin.irc, _ = plugin.vm.Object("irc = {}")
+	plugin.vm.Set("irc", plugin.irc)
+
+	// Create irc.event which is populated on each run
 	plugin.event, _ = plugin.vm.Object("event = {}")
+	plugin.irc.Set("event", plugin.event)
 
 	// Register functions to the IRC object
 	plugin.irc.Set("say", plugin.say)
-
-	// Register the global IRC object
-	plugin.irc.Set("event", plugin.event)
-	plugin.vm.Set("irc", plugin.irc)
 }
 
 func (plugin *Plugin) say(call otto.FunctionCall) otto.Value {
