@@ -158,7 +158,8 @@ func (mouse *Mouse) Part(channel string) error {
 
 func (mouse *Mouse) Say(channel, message string) error {
 	return mouse.writer.Encode(&irc.Message{
-		Command: irc.PRIVMSG,
-		Params:  []string{channel, message},
+		Command:  irc.PRIVMSG,
+		Params:   []string{channel},
+		Trailing: message,
 	})
 }

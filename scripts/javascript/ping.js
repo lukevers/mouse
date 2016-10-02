@@ -3,5 +3,7 @@ if (irc.event.command == 'PRIVMSG') {
 }
 
 function run() {
-    // TODO
+    if (irc.event.message == '@ping') {
+        irc.say(irc.event.channel, irc.event.nick + ': pong');
+    }
 }
