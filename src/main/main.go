@@ -1,50 +1,72 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"mouse"
 	"mouse/plugins/scripts/javascript"
 	"sync"
 )
 
 var (
-	wg sync.WaitGroup
+	config *Config
+	wg     sync.WaitGroup
+	mice   []*mouse.Mouse
 )
 
 func main() {
-	m := mouse.New(mouse.Config{
-		Host:      "localhost",
-		Port:      6667,
-		Nick:      "mouse",
-		User:      "mice",
-		Name:      "mouse",
-		Reconnect: true,
-		TLS:       false,
-	})
+	for _, server := range config.Servers {
+		m := mouse.New(mouse.Config{
+			Host:      server.Host,
+			Port:      server.Port,
+			Nick:      server.Nick,
+			User:      server.User,
+			Name:      server.Name,
+			Reconnect: server.Reconnect,
+			TLS:       server.TLS,
+		})
 
-	wg.Add(1)
+		// Display every message to STDOUT
+		if server.Debug {
+			m.Use(func(event *mouse.Event) {
+				log.Println(event)
+			})
+		}
 
-	if err := m.Connect(); err != nil {
-		panic(err)
+		// TODO: log
+
+		// Enable plugins if they're set to be enabled
+		for language, plugin := range server.Plugins {
+			switch language {
+			case "javascript":
+				if plugin.Enabled {
+					m.Use(javascript.NewPlugin(m, &javascript.Config{
+						Pattern:        plugin.Pattern,
+						ContinuousLoad: plugin.Reload,
+						EventTypes:     plugin.Events,
+					}))
+				}
+			}
+		}
+
+		// Connect and join
+		go func(server Server, m *mouse.Mouse) {
+			// Connect
+			if err := m.Connect(); err != nil {
+				// TODO: handle errors later
+				panic(err)
+			}
+
+			// Join channels
+			for _, channel := range server.Channels {
+				m.Join(channel)
+			}
+		}(server, m)
+
+		mice = append(mice, m)
+		wg.Add(1)
 	}
 
-	// Logger
-	m.Use(func(event *mouse.Event) {
-		fmt.Println(event)
-		/*
-			if event.Message != "" {
-				fmt.Println(event.Message)
-			}
-		*/
-	})
-
-	m.Use(javascript.NewPlugin(m, &javascript.Config{
-		Pattern:        "scripts/javascript/*.js",
-		ContinuousLoad: true,
-		EventTypes:     []string{"PRIVMSG"},
-	}))
-
-	m.Join("#test")
+	log.Println(mice)
 
 	wg.Wait()
 }
