@@ -5,3 +5,6 @@
 /pkg
 /bin
 /vendor/pkg
+
+# config
+config.toml
