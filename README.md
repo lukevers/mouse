@@ -54,3 +54,33 @@ And each bot has the following configuration options for plugins:
     # Reload all JavaScript plugins or not on every event type listed above
     reload = true
 ```
+
+## Writing Plugins
+
+At this time, Mouse only supports JavaScript plugins, but will soon also support Lua and possibly other plugins.
+
+### JavaScript Plugins
+
+Writing a JavaScript plugin is easy. There are some examples in `scripts/javascript/*.js` if you want to see some examples for yourself. Mouse adds a global `irc` object which contains both data from the most recent message and functions to interact with the IRC server.
+
+Here's a pseducode example of what the global `irc` object looks like and what data/functions are available:
+
+```javascript
+{
+    // Updates on every message
+    event: {
+        command: "PRIVMSG",
+        channel: "#channel",
+        message: "hey what's up",
+        
+        // Information about the sender
+        host: "irc.lukevers.com",
+        nick: "lukevers",
+        user: "lukevers"
+    }
+    
+    say: function(channel, message) {
+        // Send a PRIVMSG message to a channel or user.
+    },
+}
+```
