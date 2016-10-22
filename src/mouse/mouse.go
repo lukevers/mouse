@@ -125,9 +125,11 @@ func (mouse *Mouse) handle() {
 			User:    message.Prefix.User,
 		}
 
-		for _, handler := range mouse.handlers {
-			go handler(event)
-		}
+		go func(event *Event) {
+			for _, handler := range mouse.handlers {
+				handler(event)
+			}
+		}(event)
 	}
 }
 
