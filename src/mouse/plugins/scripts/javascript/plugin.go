@@ -4,6 +4,7 @@ import (
 	"github.com/robertkrimen/otto"
 	"mouse"
 	"path/filepath"
+	"sync"
 )
 
 type Plugin struct {
@@ -14,12 +15,14 @@ type Plugin struct {
 	vm    *otto.Otto
 	irc   *otto.Object
 	event *otto.Object
+	mutex *sync.Mutex
 }
 
 func NewPlugin(mouse *mouse.Mouse, config *Config) func(*mouse.Event) {
 	plugin := &Plugin{
 		Config: config,
 		Mouse:  mouse,
+		mutex:  &sync.Mutex{},
 		vm:     otto.New(),
 	}
 
@@ -49,9 +52,12 @@ func (plugin *Plugin) handler(event *mouse.Event) {
 
 	// Reload plugins each time if we have ContinuousLoad set to true.
 	if plugin.Config.ContinuousLoad {
+		plugin.mutex.Lock()
 		if err := plugin.load(); err != nil {
 			panic(err)
 		}
+
+		plugin.mutex.Unlock()
 	}
 
 	// Setup the event in the global IRC object
@@ -63,12 +69,14 @@ func (plugin *Plugin) handler(event *mouse.Event) {
 	plugin.event.Set("user", event.User)
 
 	for _, file := range plugin.files {
+		plugin.mutex.Lock()
 		script, err := plugin.vm.Compile(file, nil)
 		if err != nil {
 			panic(err)
 		}
 
 		plugin.vm.Run(script)
+		plugin.mutex.Unlock()
 	}
 }
 

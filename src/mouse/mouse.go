@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gopkg.in/sorcix/irc.v1"
 	"net"
+	"sync"
 	"time"
 )
 
@@ -14,6 +15,7 @@ type Mouse struct {
 	conn   net.Conn
 	reader *irc.Decoder
 	writer *irc.Encoder
+	mutex  *sync.Mutex
 
 	data     chan *irc.Message
 	handlers []func(*Event)
@@ -23,6 +25,7 @@ func New(config Config) *Mouse {
 	return &Mouse{
 		Config: &config,
 		data:   make(chan *irc.Message, 10),
+		mutex:  &sync.Mutex{},
 	}
 }
 
@@ -126,9 +129,13 @@ func (mouse *Mouse) handle() {
 		}
 
 		go func(event *Event) {
+			mouse.mutex.Lock()
+			defer mouse.mutex.Unlock()
+
 			for _, handler := range mouse.handlers {
 				handler(event)
 			}
+
 		}(event)
 	}
 }
