@@ -1,7 +1,7 @@
 package javascript
 
 type Config struct {
-	Pattern        string
-	ContinuousLoad bool
-	EventTypes     []string
+	Folder     string
+	Pattern    string
+	EventTypes []string
 }

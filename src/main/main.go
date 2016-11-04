@@ -40,9 +40,9 @@ func main() {
 			case "javascript":
 				if plugin.Enabled {
 					m.Use(javascript.NewPlugin(m, &javascript.Config{
-						Pattern:        plugin.Pattern,
-						ContinuousLoad: plugin.Reload,
-						EventTypes:     plugin.Events,
+						Folder:     plugin.Folder,
+						Pattern:    plugin.Pattern,
+						EventTypes: plugin.Events,
 					}))
 				}
 			}

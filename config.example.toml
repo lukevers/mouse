@@ -16,6 +16,6 @@
 
         [servers.fc00.plugins.javascript]
             enabled = true
-            pattern = "scripts/javascript/*.js"
-            reload = true
+            folder = "scripts/javascript/"
+            pattern = "*.js"
             events = [ "PRIVMSG" ]

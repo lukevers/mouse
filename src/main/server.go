@@ -12,8 +12,8 @@ type Server struct {
 	Debug     bool
 	Plugins   map[string]struct {
 		Enabled bool
+		Folder  string
 		Pattern string
-		Reload  bool
 		Events  []string
 	}
 }

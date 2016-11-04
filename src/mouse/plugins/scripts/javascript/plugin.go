@@ -1,7 +1,9 @@
 package javascript
 
 import (
+	"fmt"
 	"github.com/robertkrimen/otto"
+	"gopkg.in/fsnotify.v1"
 	"mouse"
 	"path/filepath"
 	"sync"
@@ -11,11 +13,12 @@ type Plugin struct {
 	Config *Config
 	Mouse  *mouse.Mouse
 
-	files []string
-	vm    *otto.Otto
-	irc   *otto.Object
-	event *otto.Object
-	mutex *sync.Mutex
+	files   []string
+	vm      *otto.Otto
+	irc     *otto.Object
+	event   *otto.Object
+	mutex   *sync.Mutex
+	watcher *fsnotify.Watcher
 }
 
 func NewPlugin(mouse *mouse.Mouse, config *Config) func(*mouse.Event) {
@@ -28,6 +31,7 @@ func NewPlugin(mouse *mouse.Mouse, config *Config) func(*mouse.Event) {
 
 	// Register javascript functions
 	plugin.register()
+	go plugin.watchFiles()
 
 	// Load initial scripts
 	if err := plugin.load(); err != nil {
@@ -35,6 +39,33 @@ func NewPlugin(mouse *mouse.Mouse, config *Config) func(*mouse.Event) {
 	}
 
 	return plugin.handler
+}
+
+func (plugin *Plugin) watchFiles() {
+	var err error
+	plugin.watcher, err = fsnotify.NewWatcher()
+	if err != nil {
+		panic(err)
+	}
+
+	defer plugin.watcher.Close()
+
+	if err = plugin.watcher.Add(plugin.Config.Folder); err != nil {
+		panic(err)
+	}
+
+	for {
+		select {
+		case ev := <-plugin.watcher.Events:
+			fmt.Println(ev)
+
+			if err = plugin.load(); err != nil {
+				panic(err)
+			}
+		case err := <-plugin.watcher.Errors:
+			panic(err)
+		}
+	}
 }
 
 func (plugin *Plugin) handler(event *mouse.Event) {
@@ -48,16 +79,6 @@ func (plugin *Plugin) handler(event *mouse.Event) {
 
 	if skip {
 		return
-	}
-
-	// Reload plugins each time if we have ContinuousLoad set to true.
-	if plugin.Config.ContinuousLoad {
-		plugin.mutex.Lock()
-		if err := plugin.load(); err != nil {
-			panic(err)
-		}
-
-		plugin.mutex.Unlock()
 	}
 
 	// Setup the event in the global IRC object
@@ -81,7 +102,11 @@ func (plugin *Plugin) handler(event *mouse.Event) {
 }
 
 func (plugin *Plugin) load() (err error) {
-	plugin.files, err = filepath.Glob(plugin.Config.Pattern)
+	plugin.files, err = filepath.Glob(fmt.Sprintf(
+		"%s%s",
+		plugin.Config.Folder,
+		plugin.Config.Pattern,
+	))
 	return
 }
 
