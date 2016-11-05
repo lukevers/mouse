@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/BurntSushi/toml"
+	"github.com/spf13/viper"
 	"logger/stderr"
 )
 
@@ -10,7 +10,16 @@ type Config struct {
 }
 
 func init() {
-	if _, err := toml.DecodeFile("config.toml", &config); err != nil {
-		stderr.Fatalf("Could not decode config.toml file:", err)
+	viper.SetConfigName("config")
+	viper.AddConfigPath("/etc/mouse/")
+	viper.AddConfigPath("$HOME/.mouse")
+	viper.AddConfigPath(".")
+
+	if err := viper.ReadInConfig(); err != nil {
+		stderr.Fatalf("Could not read config file:", err)
+	}
+
+	if err := viper.Unmarshal(&config); err != nil {
+		stderr.Fatalf("Could not unmarshal config:", err)
 	}
 }
