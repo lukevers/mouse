@@ -8,6 +8,12 @@
 			"branch": "master"
 		},
 		{
+			"importpath": "github.com/fsnotify/fsnotify",
+			"repository": "https://github.com/fsnotify/fsnotify",
+			"revision": "fd9ec7deca8bf46ecd2a795baaacf2b3a9be1197",
+			"branch": "master"
+		},
+		{
 			"importpath": "github.com/robertkrimen/otto",
 			"repository": "https://github.com/robertkrimen/otto",
 			"revision": "3e7ca9f1929a7f90c674390834e6495bcd09836a",
@@ -19,12 +25,6 @@
 			"revision": "c200b10b5d5e122be351b67af224adc6128af5bf",
 			"branch": "master",
 			"path": "/unix"
-		},
-		{
-			"importpath": "gopkg.in/fsnotify.v1",
-			"repository": "https://gopkg.in/fsnotify.v1",
-			"revision": "629574ca2a5df945712d3079857300b5e4da0236",
-			"branch": "master"
 		},
 		{
 			"importpath": "gopkg.in/sorcix/irc.v1",

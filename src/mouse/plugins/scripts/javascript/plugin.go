@@ -2,8 +2,8 @@ package javascript
 
 import (
 	"fmt"
+	"github.com/fsnotify/fsnotify"
 	"github.com/robertkrimen/otto"
-	"gopkg.in/fsnotify.v1"
 	"logger/stderr"
 	"mouse"
 	"path/filepath"
