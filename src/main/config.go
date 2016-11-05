@@ -2,8 +2,7 @@ package main
 
 import (
 	"github.com/BurntSushi/toml"
-	"log"
-	"os"
+	"logger/stderr"
 )
 
 type Config struct {
@@ -12,7 +11,6 @@ type Config struct {
 
 func init() {
 	if _, err := toml.DecodeFile("config.toml", &config); err != nil {
-		log.Println("Could not decode config.toml file")
-		os.Exit(1)
+		stderr.Fatalf("Could not decode config.toml file:", err)
 	}
 }

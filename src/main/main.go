@@ -1,7 +1,8 @@
 package main
 
 import (
-	"log"
+	"logger/stderr"
+	"logger/stdout"
 	"mouse"
 	"mouse/plugins/scripts/javascript"
 	"sync"
@@ -28,7 +29,7 @@ func main() {
 		// Display every message to STDOUT
 		if server.Debug {
 			m.Use(func(event *mouse.Event) {
-				log.Println(event)
+				stdout.Println(*event)
 			})
 		}
 
@@ -52,8 +53,7 @@ func main() {
 		go func(server Server, m *mouse.Mouse) {
 			// Connect
 			if err := m.Connect(); err != nil {
-				// TODO: handle errors later
-				panic(err)
+				stderr.Printf("Could not connect to server:", err)
 			}
 
 			// Join channels
@@ -65,8 +65,6 @@ func main() {
 		mice = append(mice, m)
 		wg.Add(1)
 	}
-
-	log.Println(mice)
 
 	wg.Wait()
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/robertkrimen/otto"
 	"gopkg.in/fsnotify.v1"
+	"logger/stderr"
 	"mouse"
 	"path/filepath"
 	"sync"
@@ -35,7 +36,7 @@ func NewPlugin(mouse *mouse.Mouse, config *Config) func(*mouse.Event) {
 
 	// Load initial scripts
 	if err := plugin.load(); err != nil {
-		panic(err)
+		stderr.Printf("Could not load javascript plugins:", err)
 	}
 
 	return plugin.handler
@@ -56,14 +57,12 @@ func (plugin *Plugin) watchFiles() {
 
 	for {
 		select {
-		case ev := <-plugin.watcher.Events:
-			fmt.Println(ev)
-
+		case _ = <-plugin.watcher.Events:
 			if err = plugin.load(); err != nil {
-				panic(err)
+				stderr.Printf("Could not reload javascript plugins:", err)
 			}
 		case err := <-plugin.watcher.Errors:
-			panic(err)
+			stderr.Printf("Error occurred while watching javascript plugins:", err)
 		}
 	}
 }
@@ -93,7 +92,7 @@ func (plugin *Plugin) handler(event *mouse.Event) {
 		plugin.mutex.Lock()
 		script, err := plugin.vm.Compile(file, nil)
 		if err != nil {
-			panic(err)
+			stderr.Printf("Error occurred while compiling javascript plugin:", err)
 		}
 
 		plugin.vm.Run(script)
@@ -107,6 +106,7 @@ func (plugin *Plugin) load() (err error) {
 		plugin.Config.Folder,
 		plugin.Config.Pattern,
 	))
+
 	return
 }
 
