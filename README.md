@@ -46,7 +46,8 @@ And each bot has the following configuration options for plugins:
     enabled = true
 
     # Pattern to where the scripts are
-    pattern = "scripts/javascript/*.js"
+    folder = "scripts/javascript/"
+    pattern = "*.js"
 
     # Run plugins if these events happen
     events = [ "PRIVMSG" ]
@@ -72,13 +73,13 @@ Here's a pseducode example of what the global `irc` object looks like and what d
         command: "PRIVMSG",
         channel: "#channel",
         message: "hey what's up",
-        
+
         // Information about the sender
         host: "irc.lukevers.com",
         nick: "lukevers",
         user: "lukevers"
     }
-    
+
     say: function(channel, message) {
         // Send a PRIVMSG message to a channel or user.
     },
