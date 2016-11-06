@@ -14,6 +14,11 @@ var messages = {
         "thank you {0}",
         "{0}: thanks",
     ],
+    "work-better": [
+        "{0}: work better",
+        "work better, {0}",
+        "work better {0}",
+    ],
 };
 
 var responses = {
@@ -26,6 +31,9 @@ var responses = {
     "thanks": [
         "you're welcome " + irc.event.nick,
         irc.event.nick + " you're welcome",
+    ],
+    "work-better": [
+        "ok",
     ],
 };
 
