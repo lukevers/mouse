@@ -1,4 +1,4 @@
-server "fc00" {
+servers "fc00" {
     nick = "mouse"
     user = "mouse"
     name = "mouse"
