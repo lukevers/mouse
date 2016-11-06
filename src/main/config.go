@@ -20,7 +20,21 @@ func init() {
 		stderr.Fatalf("Could not read config file:", err)
 	}
 
-	// Temporary(?) fix for HCL problems
+	// Temporary(?) fix for HCL problems.
+	//
+	// As of me writing this, the problem is that currently the HCL parser adds
+	// extra arrays for some weird reason.
+	//
+	// This:
+	//
+	// servers "fc00" {
+	//   ...
+	// }
+	//
+	// Is converted to this [[map:[]]] when it should be converted to [map:[]]
+	// on every map.
+	//
+	// @see https://github.com/hashicorp/hcl/pull/24#issuecomment-69821965
 	servers := viper.Get("servers")
 	if reflect.ValueOf(servers).Kind() == reflect.Slice {
 		servers = servers.([]map[string]interface{})[0]
