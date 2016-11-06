@@ -1,7 +1,10 @@
 # macOS
 .DS_Store
 
-# folders
+# Folders
 /pkg
 /bin
 /vendor/pkg
+
+# Root level config files
+/config.*
