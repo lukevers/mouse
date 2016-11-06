@@ -1,0 +1,37 @@
+{
+  "servers": [
+    {
+      "fc00": [
+        {
+          "channels": [
+            "#lukevers",
+            "#mouse",
+            "#mice"
+          ],
+          "debug": true,
+          "host": "irc.fc00.io",
+          "name": "mouse",
+          "nick": "mouse",
+          "plugins": [
+            {
+              "javascript": [
+                {
+                  "enabled": true,
+                  "events": [
+                    "PRIVMSG"
+                  ],
+                  "folder": "scripts/javascript",
+                  "pattern": "*.js"
+                }
+              ]
+            }
+          ],
+          "port": 6667,
+          "reconnect": true,
+          "tls": false,
+          "user": "mouse"
+        }
+      ]
+    }
+  ]
+}
