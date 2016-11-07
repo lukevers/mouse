@@ -1,6 +1,6 @@
 ![Mouse](./vendor/mouse.jpg)
 
-A scriptable/configurable IRC bot that can handle as many connections as you want.
+A scriptable, configuration powered IRC bot that can handle as many connnections as you want.
 
 ## Configuring Mouse
 
