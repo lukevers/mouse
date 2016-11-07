@@ -1,4 +1,4 @@
-# Mouse
+![Mouse](./vendor/mouse.jpg)
 
 A scriptable/configurable IRC bot that can handle as many connections as you want.
 
