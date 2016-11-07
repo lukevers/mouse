@@ -8,15 +8,21 @@
 			"branch": "master"
 		},
 		{
-			"importpath": "github.com/hashicorp/hcl",
-			"repository": "https://github.com/hashicorp/hcl",
-			"revision": "f74cf8281543a0797d7b4ab7d88e76e7ba125308",
-			"branch": "master"
-		},
-		{
 			"importpath": "github.com/kr/fs",
 			"repository": "https://github.com/kr/fs",
 			"revision": "2788f0dbd16903de03cb8186e5c7d97b69ad387b",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/lukevers/hcl",
+			"repository": "https://github.com/lukevers/hcl",
+			"revision": "3db2ed14c5d22244fb279f03dcb323af64be824f",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/lukevers/viper",
+			"repository": "https://github.com/lukevers/viper",
+			"revision": "6069d0d4e3d3fa4a35e109dedbb96692b95ed03b",
 			"branch": "master"
 		},
 		{
@@ -83,12 +89,6 @@
 			"importpath": "github.com/spf13/pflag",
 			"repository": "https://github.com/spf13/pflag",
 			"revision": "5ccb023bc27df288a957c5e994cd44fd19619465",
-			"branch": "master"
-		},
-		{
-			"importpath": "github.com/spf13/viper",
-			"repository": "https://github.com/spf13/viper",
-			"revision": "651d9d916abc3c3d6a91a12549495caba5edffd2",
 			"branch": "master"
 		},
 		{

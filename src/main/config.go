@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/spf13/viper"
+	"github.com/lukevers/viper"
 	"logger/stderr"
 )
 
