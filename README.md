@@ -2,7 +2,7 @@
 
 A scriptable/configurable IRC bot that can handle as many connections as you want.
 
-## Configuring the mice
+## Configuring Mouse
 
 Your configuration file can either be written in [TOML](https://github.com/toml-lang/toml), [JSON](http://www.json.org/), [YAML](http://yaml.org/), [HCL](https://github.com/hashicorp/hcl), or [Java properties](http://docs.oracle.com/javase/tutorial/essential/environment/properties.html). Mouse will search for your configuration file at all of these locations with the name `config.{toml|json|yaml|hcl|properties}`:
 
