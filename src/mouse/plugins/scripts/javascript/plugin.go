@@ -16,7 +16,6 @@ type Plugin struct {
 
 	files   []string
 	vm      *otto.Otto
-	irc     *otto.Object
 	event   *otto.Object
 	mutex   *sync.Mutex
 	watcher *fsnotify.Watcher
@@ -80,7 +79,7 @@ func (plugin *Plugin) handler(event *mouse.Event) {
 		return
 	}
 
-	// Setup the event in the global IRC object
+	// Update the gloval event
 	plugin.event.Set("command", event.Command)
 	plugin.event.Set("channel", event.Channel)
 	plugin.event.Set("message", event.Message)
@@ -111,23 +110,15 @@ func (plugin *Plugin) load() (err error) {
 }
 
 func (plugin *Plugin) register() {
-	// Create a global IRC object
-	plugin.irc, _ = plugin.vm.Object("irc = {}")
-	plugin.vm.Set("irc", plugin.irc)
-
-	// Create irc.event which is populated on each run
+	// Register data
 	plugin.event, _ = plugin.vm.Object("event = {}")
-	plugin.irc.Set("event", plugin.event)
+	plugin.vm.Set("event", plugin.event)
 
-	// Register functions to the IRC object
-	plugin.irc.Set("say", plugin.say)
-}
-
-func (plugin *Plugin) say(call otto.FunctionCall) otto.Value {
-	channel, _ := call.Argument(0).ToString()
-	message, _ := call.Argument(1).ToString()
-
-	plugin.Mouse.Say(channel, message)
-
-	return otto.Value{}
+	// Register functions
+	plugin.vm.Set("join", plugin.join)
+	plugin.vm.Set("part", plugin.part)
+	plugin.vm.Set("cycle", plugin.cycle)
+	plugin.vm.Set("say", plugin.say)
+	plugin.vm.Set("kick", plugin.kick)
+	plugin.vm.Set("ban", plugin.ban)
 }

@@ -12,8 +12,8 @@ var alots = [
     "http://3.bp.blogspot.com/_D_Z-D2tzi14/S8TTPQCPA6I/AAAAAAAACwA/ZHZH-Bi8OmI/s400/ALOT2.png"
 ];
 
-if (irc.event.command == 'PRIVMSG') {
-    if (irc.event.message.indexOf('alot') > -1) {
-        irc.say(irc.event.channel, alots[Math.floor(Math.random() * alots.length)]);
+if (event.command == 'PRIVMSG') {
+    if (event.message.indexOf('alot') > -1) {
+        say(event.channel, alots[Math.floor(Math.random() * alots.length)]);
     }
 }

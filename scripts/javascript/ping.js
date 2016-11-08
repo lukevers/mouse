@@ -1,9 +1,9 @@
-if (irc.event.command == 'PRIVMSG') {
+if (event.command == 'PRIVMSG') {
     run();
 }
 
 function run() {
-    if (irc.event.message == '@ping') {
-        irc.say(irc.event.channel, irc.event.nick + ': pong');
+    if (event.message == '@ping') {
+        say(event.channel, event.nick + ': pong');
     }
 }

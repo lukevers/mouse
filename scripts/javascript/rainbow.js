@@ -23,12 +23,12 @@ function rainbow(str) {
     });
 }
 
-if (irc.event.command == 'PRIVMSG') {
-    if (irc.event.message.indexOf('| rainbow') > -1) {
-        var message = rainbow(irc.event.message.replace('| rainbow', '').replace(/\s+/g, ' '));
-        irc.say(irc.event.channel, message);
-    } else if (irc.event.message.indexOf('@rainbow') > -1) {
-        var message = rainbow(irc.event.message.replace('@rainbow', '').replace(/\s+/g, ' '));
-        irc.say(irc.event.channel, message.trim());
+if (event.command == 'PRIVMSG') {
+    if (event.message.indexOf('| rainbow') > -1) {
+        var message = rainbow(event.message.replace('| rainbow', '').replace(/\s+/g, ' '));
+        say(event.channel, message);
+    } else if (event.message.indexOf('@rainbow') > -1) {
+        var message = rainbow(event.message.replace('@rainbow', '').replace(/\s+/g, ' '));
+        say(event.channel, message.trim());
     }
 }

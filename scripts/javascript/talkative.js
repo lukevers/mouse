@@ -23,14 +23,14 @@ var messages = {
 
 var responses = {
     "hello": [
-        "hey " + irc.event.nick,
-        "hi " + irc.event.nick,
-        "hello " + irc.event.nick,
-        "hai " + irc.event.nick,
+        "hey " + event.nick,
+        "hi " + event.nick,
+        "hello " + event.nick,
+        "hai " + event.nick,
     ],
     "thanks": [
-        "you're welcome " + irc.event.nick,
-        irc.event.nick + " you're welcome",
+        "you're welcome " + event.nick,
+        event.nick + " you're welcome",
     ],
     "work-better": [
         "ok",
@@ -49,14 +49,14 @@ String.prototype.format = function() {
     return formatted;
 };
 
-if (irc.event.command == 'PRIVMSG') {
+if (event.command == 'PRIVMSG') {
     for (var index in messages) {
         if (messages.hasOwnProperty(index)) {
             for (var i = 0; i < messages[index].length; i++) {
                 messages[index][i] = messages[index][i].format(name, '{0}');
-                if (irc.event.message.indexOf(messages[index][i]) > -1) {
+                if (event.message.indexOf(messages[index][i]) > -1) {
                     var r = [Math.floor(Math.random() * responses[index].length)];
-                    irc.say(irc.event.channel, responses[index][r]);
+                    say(event.channel, responses[index][r]);
                     break;
                 }
             }
