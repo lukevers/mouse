@@ -8,11 +8,12 @@ A scriptable, configuration powered IRC bot that can handle as many connnections
     1. [Building from source](#building-from-source)
     2. [Downloading a binary](#downloading-a-binary)
 2. [Configuring](#configuring)
-    1. [Configuring with TOML](#configuring-with-toml)
-    2. [Configuring with JSON](#configuring-with-json)
-    3. [Configuring with HCL](#configuring-with-hcl)
-    4. [Configuring with YAML](#configuring-with-yaml)
-    5. [Configuring with Java Properties](#configuring-with-java-properties)
+    1. [Choosing a configuration type](#choosing-a-configuration-type)
+        1. [Configuring with TOML](#configuring-with-toml)
+        2. [Configuring with JSON](#configuring-with-json)
+        3. [Configuring with HCL](#configuring-with-hcl)
+        4. [Configuring with YAML](#configuring-with-yaml)
+        5. [Configuring with Java Properties](#configuring-with-java-properties)
 3. [Extending Mouse with plugins](#extending-mouse-with-plugins)
     1. [Writing a plugin in JavaScript](#writing-a-plugin-in-javascript)
         1. [Global JavaScript functions](#global-javascript-functions)
@@ -69,7 +70,9 @@ mouse.properties
 
 Keep in mind that a configuration file named `mouse.toml` MUST be a TOML file, and the same goes for every other supported configuration file type.
 
-### Configuring with TOML
+### Choosing a configuration type
+
+#### Configuring with TOML
 
 You can choose to configure Mouse with [TOML](https://github.com/toml-lang/toml). Configure your servers like this:
 
@@ -118,7 +121,7 @@ You can choose to configure Mouse with [JSON](http://www.json.org/). Configure y
 
 You can see a full example at [contrib/config-examples/config.json](contrib/config-examples/config.json).
 
-### Configuring with HCL
+#### Configuring with HCL
 
 You can choose to configure Mouse with [HCL](https://github.com/hashicorp/hcl). Configure your servers like this:
 
@@ -144,7 +147,7 @@ servers "b" {
 
 You can see a full example at [contrib/config-examples/config.hcl](contrib/config-examples/config.hcl).
 
-### Configuring with YAML
+#### Configuring with YAML
 
 You can choose to configure Mouse with [YAML](http://yaml.org/). Configure your servers like this:
 
@@ -158,11 +161,14 @@ servers:
             javascript:
                 enabled: true
                 # ...
+    b:
+        nick: mouse
+        # ...
 ```
 
 You can see a full example at [contrib/config-examples/config.yaml](contrib/config-examples/config.yaml).
 
-### Configuring with Java Properties
+#### Configuring with Java Properties
 
 You can choose to configure Mouse with [Java Properties](http://docs.oracle.com/javase/tutorial/essential/environment/properties.html).
 
