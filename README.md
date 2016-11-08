@@ -71,23 +71,112 @@ Keep in mind that a configuration file named `mouse.toml` MUST be a TOML file, a
 
 ### Configuring with TOML
 
-TODO
+You can choose to configure Mouse with [TOML](https://github.com/toml-lang/toml). Configure your servers like this:
+
+```toml
+[servers]
+
+    [server.a]
+        nick = "mouse"
+
+        # ...
+
+        [servers.a.plugins.javascript]
+            enabled = true
+
+            # ...
+
+    [server.b]
+        nick = "mouse"
+
+        # ...
+```
+
+You can see a full example at [contrib/config-examples/config.toml](contrib/config-examples/config.toml).
 
 ### Configuring with JSON
 
-TODO
+You can choose to configure Mouse with [JSON](http://www.json.org/). Configure your servers like this:
+
+```json
+{
+    "servers": {
+        "a": {
+            "nick": "mouse",
+            "plugins": {
+                "javascript": {
+                    "enabled": true
+                }
+            }
+        },
+        "b": {
+            "nick": "mouse"
+        }
+    }
+}
+```
+
+You can see a full example at [contrib/config-examples/config.json](contrib/config-examples/config.json).
 
 ### Configuring with HCL
 
-TODO
+You can choose to configure Mouse with [HCL](https://github.com/hashicorp/hcl). Configure your servers like this:
+
+```hcl
+servers "a" {
+    nick = "mouse"
+
+    # ...
+
+    plugins "javascript" {
+        enabled = true
+
+        # ...
+    }
+}
+
+servers "b" {
+    nick = "mouse"
+
+    # ...
+}
+```
+
+You can see a full example at [contrib/config-examples/config.hcl](contrib/config-examples/config.hcl).
 
 ### Configuring with YAML
 
-TODO
+You can choose to configure Mouse with [YAML](http://yaml.org/). Configure your servers like this:
+
+```yaml
+servers:
+    a:
+        nick: mouse
+        # ...
+
+        plugins:
+            javascript:
+                enabled: true
+                # ...
+```
+
+You can see a full example at [contrib/config-examples/config.yaml](contrib/config-examples/config.yaml).
 
 ### Configuring with Java Properties
 
-TODO
+You can choose to configure Mouse with [Java Properties](http://docs.oracle.com/javase/tutorial/essential/environment/properties.html).
+
+```properties
+servers.a.nick = "mouse"
+# ...
+servers.a.plugins.javascript.enabled = true
+# ...
+
+servers.b.nick = "mouse"
+# ...
+```
+
+You can see a full example at [contrib/config-examples/config.properties](contrib/config-examples/config.properties).
 
 ## Extending Mouse with plugins
 
