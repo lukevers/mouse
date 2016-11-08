@@ -60,14 +60,14 @@ $HOME/.mouse/
 Your configuration file must be named appropriately and should be one of the following:
 
 ```bash
-config.toml
-config.json
-config.hcl
-config.yaml
-config.properties
+mouse.toml
+mouse.json
+mouse.hcl
+mouse.yaml
+mouse.properties
 ```
 
-Keep in mind that a configuration file named `config.toml` MUST be a TOML file, and the same goes for every other supported configuration file type.
+Keep in mind that a configuration file named `mouse.toml` MUST be a TOML file, and the same goes for every other supported configuration file type.
 
 ### Configuring with TOML
 

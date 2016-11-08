@@ -10,7 +10,7 @@ type Config struct {
 }
 
 func init() {
-	viper.SetConfigName("config")
+	viper.SetConfigName("mouse")
 	viper.AddConfigPath("/etc/mouse/")
 	viper.AddConfigPath("$HOME/.mouse")
 	viper.AddConfigPath(".")
