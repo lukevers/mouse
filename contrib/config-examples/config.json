@@ -16,7 +16,7 @@
                "events":[
                   "PRIVMSG"
                ],
-               "folder":"scripts/javascript",
+               "folder":"contrib/scripts/javascript",
                "pattern":"*.js"
             }
          },
