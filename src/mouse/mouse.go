@@ -151,10 +151,10 @@ func (mouse *Mouse) Use(handler func(*Event)) {
 	mouse.handlers = append(mouse.handlers, handler)
 }
 
-func (mouse *Mouse) Join(channel string) error {
+func (mouse *Mouse) Join(channel, password string) error {
 	return mouse.writer.Encode(&irc.Message{
 		Command: irc.JOIN,
-		Params:  []string{channel},
+		Params:  []string{channel, password},
 	})
 }
 

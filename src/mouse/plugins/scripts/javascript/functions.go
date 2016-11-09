@@ -5,14 +5,25 @@ import (
 )
 
 func (plugin *Plugin) join(call otto.FunctionCall) otto.Value {
+	channel, _ := call.Argument(0).ToString()
+	password, _ := call.Argument(1).ToString()
+
+	plugin.Mouse.Join(channel, password)
+
 	return otto.Value{}
 }
 
 func (plugin *Plugin) part(call otto.FunctionCall) otto.Value {
+	channel, _ := call.Argument(0).ToString()
+
+	plugin.Mouse.Part(channel)
+
 	return otto.Value{}
 }
 
 func (plugin *Plugin) cycle(call otto.FunctionCall) otto.Value {
+	plugin.part(call)
+	plugin.join(call)
 	return otto.Value{}
 }
 

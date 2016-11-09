@@ -58,7 +58,7 @@ func main() {
 
 			// Join channels
 			for _, channel := range server.Channels {
-				m.Join(channel)
+				m.Join(channel, "")
 			}
 		}(server, m)
 
