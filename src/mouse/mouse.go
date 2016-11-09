@@ -172,3 +172,19 @@ func (mouse *Mouse) Say(channel, message string) error {
 		Trailing: message,
 	})
 }
+
+func (mouse *Mouse) Op(channel, nick string) error {
+	return mouse.writer.Encode(&irc.Message{
+		Command:  irc.MODE,
+		Params:   []string{channel, "+o"},
+		Trailing: nick,
+	})
+}
+
+func (mouse *Mouse) Deop(channel, nick string) error {
+	return mouse.writer.Encode(&irc.Message{
+		Command:  irc.MODE,
+		Params:   []string{channel, "-o"},
+		Trailing: nick,
+	})
+}

@@ -32,3 +32,21 @@ func (plugin *Plugin) kick(call otto.FunctionCall) otto.Value {
 func (plugin *Plugin) ban(call otto.FunctionCall) otto.Value {
 	return otto.Value{}
 }
+
+func (plugin *Plugin) op(call otto.FunctionCall) otto.Value {
+	channel, _ := call.Argument(0).ToString()
+	user, _ := call.Argument(1).ToString()
+
+	plugin.Mouse.Op(channel, user)
+
+	return otto.Value{}
+}
+
+func (plugin *Plugin) deop(call otto.FunctionCall) otto.Value {
+	channel, _ := call.Argument(0).ToString()
+	user, _ := call.Argument(1).ToString()
+
+	plugin.Mouse.Deop(channel, user)
+
+	return otto.Value{}
+}

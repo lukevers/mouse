@@ -121,4 +121,6 @@ func (plugin *Plugin) register() {
 	plugin.vm.Set("say", plugin.say)
 	plugin.vm.Set("kick", plugin.kick)
 	plugin.vm.Set("ban", plugin.ban)
+	plugin.vm.Set("op", plugin.op)
+	plugin.vm.Set("deop", plugin.deop)
 }
