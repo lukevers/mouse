@@ -14,23 +14,42 @@ A scriptable, configuration powered IRC bot that can handle as many connnections
         3. [Configuring with HCL](#configuring-with-hcl)
         4. [Configuring with YAML](#configuring-with-yaml)
         5. [Configuring with Java Properties](#configuring-with-java-properties)
+    2. [Configuration options](#configuration-options)
+        1. [Nick](#nick)
+        2. [User](#user)
+        3. [Name](#name)
+        4. [Host](#host)
+        5. [Port](#port)
+        6. [TLS](#tls)
+        7. [Reconnect](#reconnect)
+        8. [Debug](#debug)
+        9. [Channels](#channels)
+        10. [Plugins](#plugins)
+            1. [Enabled](#enabled)
+            2. [Folder](#folder)
+            3. [Pattern](#pattern)
+            4. [Events](#events)
 3. [Extending Mouse with plugins](#extending-mouse-with-plugins)
-    1. [Writing a plugin in JavaScript](#writing-a-plugin-in-javascript)
-        1. [Global JavaScript functions](#global-javascript-functions)
-            1. [Join](#join)
-            2. [Part](#part)
-            3. [Cycle](#cycle)
-            4. [Say](#say)
-            5. [Kick](#kick)
-            6. [Ban](#ban)
-        2. [Global JavaScript data](#global-javascript-data)
-            1. [Event](#event)
-                1. [Command](#command)
-                2. [Channel](#channel)
-                3. [Message](#message)
-                4. [Host](#host)
-                5. [Nick](#nick)
-                6. [User](#user)
+    1. [Language choices](#language-choices)
+        1. [JavaScript](#javascript)
+        2. [Lua](#lua)
+    2. [Global functions](#global-functions)
+        1. [Join](#join)
+        2. [Part](#part)
+        3. [Cycle](#cycle)
+        4. [Say](#say)
+        5. [Kick](#kick)
+        6. [Ban](#ban)
+        7. [Op](#op)
+        8. [Deop](#deop)
+    3. [Global data](#global-data)
+        1. [Event](#event)
+            1. [Command](#command)
+            2. [Channel](#channel)
+            3. [Message](#message)
+            4. [Host](#host-1)
+            5. [Nick](#nick-2)
+            6. [User](#user-3)
 4. [Contributing](#contributing)
 5. [License](#license)
 
@@ -50,7 +69,7 @@ This option is currently not available, but will be once Mouse hits version `1.0
 
 ## Configuring
 
-Mouse uses the [Viper](https://github.com/spf13/viper) library, which allows a variety of configuration types. Your configuration file can exist at any of the following locations:
+Your configuration file can exist at any of the following locations:
 
 ```bash
 /etc/mouse/
@@ -58,7 +77,11 @@ $HOME/.mouse/
 ./
 ```
 
-Your configuration file must be named appropriately and should be one of the following:
+The name of your configuration file should always be `mouse`, but the file extension depends on the configuration type that you use.
+
+### Choosing a configuration type
+
+Mouse uses the [Viper](https://github.com/spf13/viper) library, which allows a variety of configuration types. Your configuration file must be named appropriately and should be one of the following:
 
 ```bash
 mouse.toml
@@ -69,8 +92,6 @@ mouse.properties
 ```
 
 Keep in mind that a configuration file named `mouse.toml` MUST be a TOML file, and the same goes for every other supported configuration file type.
-
-### Choosing a configuration type
 
 #### Configuring with TOML
 
@@ -184,30 +205,147 @@ servers.b.nick = "mouse"
 
 You can see a full example at [contrib/config-examples/config.properties](contrib/config-examples/config.properties).
 
+### Configuration options
+
+All of the following configuration options should be nested in a server block. See [above](#choosing-a-configuration-type) to find a full example of the configuration file type that you're using.
+
+#### Nick
+
+Nick is a string and the name that the bot will use once connected to the IRC server.
+
+```toml
+nick = "mouse"
+```
+
+#### User
+
+User is a string and contains the username of the user.
+
+```toml
+user = "mouse"
+```
+
+#### Name
+
+Name is a string and the real name of the bot.
+
+```toml
+name = "mouse"
+```
+
+#### Host
+
+Host is a string that specifies what server to connect to. This should not include the port.
+
+```toml
+host = "irc.fc00.io"
+```
+
+#### Port
+
+Port is an integer that specifies the port on the IRC server to connect to.
+
+```toml
+port = 6667
+```
+
+#### TLS
+
+Currently does nothing.
+
+```toml
+tls = false
+```
+
+#### Reconnect
+
+Reconnect is a boolean that when `true` will try to reconnect to the server if disconnected from.
+
+```toml
+reconnect = true
+```
+
+#### Debug
+
+Debug is a boolean that prints every IRC event for all connected servers to STDOUT.
+
+```toml
+debug = false
+```
+
+#### Channels
+
+Channels is an array of strings that represent channels to join once connected to the IRC server.
+
+```toml
+channels = [ "#a", "#b", "#c" ]
+```
+
+#### Plugins
+
+All of the following configuration options should be nested in a plugins block named for the plugin language to be configured. See [below](#extending-mouse-with-plugins) for more information on plugins.
+
+##### Enabled
+
+Enabled is a boolean that enables and disables plugin support for the specific plugin language.
+
+```toml
+enabled = true
+```
+
+##### Folder
+
+Folder is a string that contains a directory path for plugin files. This does not include a pattern, as the pattern attribute [below](#pattern) decides what the pattern is for plugin files.
+
+```toml
+folder = "/home/username/.mouse/scripts/language/"
+```
+
+##### Pattern
+
+Pattern is a string that contains the pattern for plugin files. This does not include the folder, as the folder attribute [above](#folder) decides where to look for the pattern.
+
+```toml
+pattern = "*.js"
+```
+
+##### Events
+
+Events is an array of strings that contain official IRC event types that the plugins should run on.
+
+```toml
+events = [ "PRIVMSG" ]
+```
+
 ## Extending Mouse with plugins
 
-TODO
+### Language Choices
 
-### Writing a plugin in JavaScript
+#### JavaScript
 
-TODO
+Using the embeddable JavaScript interpreter [Otto](https://github.com/robertkrimen/otto), we can write plugins that deeply integrate with Mouse.
 
-#### Global JavaScript functions
+#### Lua
 
-##### Join
+Coming soon.
 
-TODO
+### Global Functions
+
+#### Join
+
+The `join` function allows your bot to join a new channel. You may also specify a password if the channel has a password set, but that's not required.
 
 ```javascript
 /**
  * @param string channel
+ * @param string password
  */
-function join(channel)
+function join(channel, password)
 ```
 
-##### Part
+#### Part
 
-TODO
+The `part` function allows your bot to part a channel.
 
 ```javascript
 /**
@@ -216,9 +354,9 @@ TODO
 function part(channel)
 ```
 
-##### Cycle
+#### Cycle
 
-TODO
+The `cycle` function allows your bot to cycle on a channel. This will leave the channel, and then re-join it.
 
 ```javascript
 /**
@@ -227,9 +365,9 @@ TODO
 function cycle(channel)
 ```
 
-##### Say
+#### Say
 
-The `say` function allows your bot to send messages to any buffer that will allow it. When sending to a channel, the channel name should be prefixed with `#`, and when sending to a user, it should not be.
+The `say` function allows your bot to send messages to any buffer that will allow it. When sending to a channel, the channel name must be prefixed with `#`, and when sending to a user, it should not be.
 
 ```javascript
 /**
@@ -239,39 +377,65 @@ The `say` function allows your bot to send messages to any buffer that will allo
 function say(buffer, message)
 ```
 
-##### Kick
+#### Kick
 
-TODO
+The `kick` function allows your bot to kick users out of a channel. You may also specify a reason, but that's not required.
+
+```javascript
+/**
+ * @param string channel
+ * @param string user
+ * @param string reason
+ */
+function kick(channel, user, reason)
+```
+
+#### Ban
+
+The `ban` function allows your bot to ban users in a channel. You may also specify a reason, but that's not required.
+
+```javascript
+/**
+ * @param string channel
+ * @param string user
+ * @param string reason
+ */
+function ban(channel, user, reason)
+```
+
+#### Op
+
+The `op` function allows your bot to change the mode of a user to `+o` in a channel.
 
 ```javascript
 /**
  * @param string channel
  * @param string user
  */
-function kick(channel, user)
+function op(channel, user)
 ```
 
-##### Ban
+#### Deop
 
-TODO
+The `deop` function allows your bot to change the mode of a user to `-o` in a channel.
 
 ```javascript
 /**
  * @param string channel
  * @param string user
  */
-function ban(channel, user)
+function deop(channel, user)
 ```
 
-#### Global JavaScript data
+### Global Data
 
-There are variables set at the global scope that can be used.
+There are variables set at the global scope that can be used in all plugins.
 
-##### Event
+#### Event
 
-On each event that the JavaScript plugins are listening for, a new event is populated that is passed in to an `event` object in the global scope.
+On each event that the plugins are listening for, a new event is populated that is passed in to an `event` object in the global scope.
 
-###### Command
+##### Command
 
 Command is a string that contains the command that triggered this event. The most frequently used command in Mouse plugins is probably [`"PRIVMSG"`](https://tools.ietf.org/html/rfc2812#section-3.3.1).
 
@@ -279,7 +443,7 @@ Command is a string that contains the command that triggered this event. The mos
 event.command
 ```
 
-###### Channel
+##### Channel
 
 Channel is a string that contains the channel where the event took place. Channel is not just for channels, but also for private messages. If it is a channel, it will be prefixed with `#`.
 
@@ -287,7 +451,7 @@ Channel is a string that contains the channel where the event took place. Channe
 event.channel
 ```
 
-###### Message
+##### Message
 
 Message is a string that contains the message of the event.
 
@@ -295,7 +459,7 @@ Message is a string that contains the message of the event.
 event.message
 ```
 
-###### Host
+##### Host
 
 Host is a string that contains the host of the user that triggered this event.
 
@@ -303,7 +467,7 @@ Host is a string that contains the host of the user that triggered this event.
 event.host
 ```
 
-###### Nick
+##### Nick
 
 Nick is a string that contains the nick of the user that triggered this event.
 
@@ -311,7 +475,7 @@ Nick is a string that contains the nick of the user that triggered this event.
 event.nick
 ```
 
-###### User
+##### User
 
 User is a string that contains the user of the user that triggered this event.
 
