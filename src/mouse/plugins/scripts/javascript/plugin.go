@@ -50,8 +50,10 @@ func (plugin *Plugin) watchFiles() {
 
 	defer plugin.watcher.Close()
 
-	if err = plugin.watcher.Add(plugin.Config.Folder); err != nil {
-		panic(err)
+	for _, folder := range plugin.Config.Folders {
+		if err = plugin.watcher.Add(folder); err != nil {
+			panic(err)
+		}
 	}
 
 	for {
@@ -100,12 +102,21 @@ func (plugin *Plugin) handler(event *mouse.Event) {
 }
 
 func (plugin *Plugin) load() (err error) {
-	plugin.files, err = filepath.Glob(fmt.Sprintf(
-		"%s%s",
-		plugin.Config.Folder,
-		plugin.Config.Pattern,
-	))
+	plugin.mutex.Lock()
+	defer plugin.mutex.Unlock()
 
+	var files []string
+	for _, folder := range plugin.Config.Folders {
+		f, _ := filepath.Glob(fmt.Sprintf(
+			"%s%s",
+			folder,
+			plugin.Config.Pattern,
+		))
+
+		files = append(files, f...)
+	}
+
+	plugin.files = files
 	return
 }
 

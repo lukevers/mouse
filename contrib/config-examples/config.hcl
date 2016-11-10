@@ -13,7 +13,7 @@ servers "fc00" {
 
     plugins "javascript" {
         enabled = true
-        folder = "contrib/scripts/javascript/"
+        folders = [ "contrib/scripts/javascript/" ]
         pattern = "*.js"
         events = [ "PRIVMSG" ]
     }

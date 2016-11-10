@@ -26,7 +26,7 @@ A scriptable, configuration powered IRC bot that can handle as many connnections
         9. [Channels](#channels)
         10. [Plugins](#plugins)
             1. [Enabled](#enabled)
-            2. [Folder](#folder)
+            2. [Folders](#folders)
             3. [Pattern](#pattern)
             4. [Events](#events)
 3. [Extending Mouse with plugins](#extending-mouse-with-plugins)
@@ -294,12 +294,12 @@ Enabled is a boolean that enables and disables plugin support for the specific p
 enabled = true
 ```
 
-##### Folder
+##### Folders
 
-Folder is a string that contains a directory path for plugin files. This does not include a pattern, as the pattern attribute [below](#pattern) decides what the pattern is for plugin files.
+Folders is an array of strings that contains a directory path for plugin files. This does not include a pattern, as the pattern attribute [below](#pattern) decides what the pattern is for plugin files. A good use of multiple folders that contain scripts could be certain scripts that only one bot should access, and some scripts that all bots should access.
 
 ```toml
-folder = "/home/username/.mouse/scripts/language/"
+folders = [ "/home/username/.mouse/scripts/language/" ]
 ```
 
 ##### Pattern

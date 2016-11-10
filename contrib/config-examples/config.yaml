@@ -18,7 +18,8 @@ servers:
     plugins:
       javascript:
         enabled: true
-        folder: contrib/scripts/javascript/
+        folders:
+            - "contrib/scripts/javascript/"
         pattern: "*.js"
         events:
           - PRIVMSG

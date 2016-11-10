@@ -12,7 +12,7 @@ type Server struct {
 	Debug     bool
 	Plugins   map[string]struct {
 		Enabled bool
-		Folder  string
+		Folders []string
 		Pattern string
 		Events  []string
 	}

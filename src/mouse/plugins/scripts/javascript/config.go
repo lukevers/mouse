@@ -1,7 +1,7 @@
 package javascript
 
 type Config struct {
-	Folder     string
+	Folders    []string
 	Pattern    string
 	EventTypes []string
 }
