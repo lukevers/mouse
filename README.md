@@ -333,14 +333,13 @@ Coming soon.
 
 #### Join
 
-The `join` function allows your bot to join a new channel. You may also specify a password if the channel has a password set, but that's not required.
+The `join` function allows your bot to join a new channel. You may also specify a password if the channel has a password set, but that's not required. If there is a password, append it to the channel parameter with a space in between.
 
 ```javascript
 /**
  * @param string channel
- * @param string password
  */
-function join(channel, password)
+function join(channel)
 ```
 
 #### Part
