@@ -188,3 +188,19 @@ func (mouse *Mouse) Deop(channel, nick string) error {
 		Trailing: nick,
 	})
 }
+
+func (mouse *Mouse) Kick(channel, user, reason string) error {
+	return mouse.writer.Encode(&irc.Message{
+		Command:  irc.KICK,
+		Params:   []string{user},
+		Trailing: reason,
+	})
+}
+
+func (mouse *Mouse) Ban(channel, user, reason string) error {
+	return mouse.writer.Encode(&irc.Message{
+		Command:  irc.BAN,
+		Params:   []string{user},
+		Trailing: reason,
+	})
+}

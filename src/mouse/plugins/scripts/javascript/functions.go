@@ -36,10 +36,22 @@ func (plugin *Plugin) say(call otto.FunctionCall) otto.Value {
 }
 
 func (plugin *Plugin) kick(call otto.FunctionCall) otto.Value {
+	channel, _ := call.Argument(0).ToString()
+	user, _ := call.Argument(1).ToString()
+	reason, _ := call.Argument(2).ToString()
+
+	plugin.Mouse.Kick(channel, user, reason)
+
 	return otto.Value{}
 }
 
 func (plugin *Plugin) ban(call otto.FunctionCall) otto.Value {
+	channel, _ := call.Argument(0).ToString()
+	user, _ := call.Argument(1).ToString()
+	reason, _ := call.Argument(2).ToString()
+
+	plugin.Mouse.Ban(channel, user, reason)
+
 	return otto.Value{}
 }
 
