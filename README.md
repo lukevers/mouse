@@ -40,8 +40,9 @@ A scriptable, configuration powered IRC bot that can handle as many connnections
         4. [Say](#say)
         5. [Kick](#kick)
         6. [Ban](#ban)
-        7. [Op](#op)
-        8. [Deop](#deop)
+        7. [Unban](#unban)
+        8. [Op](#op)
+        9. [Deop](#deop)
     3. [Global data](#global-data)
         1. [Event](#event)
             1. [Command](#command)
@@ -400,6 +401,18 @@ The `ban` function allows your bot to ban users in a channel. You may also speci
  * @param string reason
  */
 function ban(channel, user, reason)
+```
+
+#### Unban
+
+The `unban` function allows your bot to unban users in a channel.
+
+```javascript
+/**
+ * @param string channel
+ * @param string user
+ */
+function unban(channel, user)
 ```
 
 #### Op

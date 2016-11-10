@@ -55,6 +55,15 @@ func (plugin *Plugin) ban(call otto.FunctionCall) otto.Value {
 	return otto.Value{}
 }
 
+func (plugin *Plugin) unban(call otto.FunctionCall) otto.Value {
+	channel, _ := call.Argument(0).ToString()
+	user, _ := call.Argument(1).ToString()
+
+	plugin.Mouse.Unban(channel, user)
+
+	return otto.Value{}
+}
+
 func (plugin *Plugin) op(call otto.FunctionCall) otto.Value {
 	channel, _ := call.Argument(0).ToString()
 	user, _ := call.Argument(1).ToString()

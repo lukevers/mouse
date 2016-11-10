@@ -199,8 +199,15 @@ func (mouse *Mouse) Kick(channel, user, reason string) error {
 
 func (mouse *Mouse) Ban(channel, user, reason string) error {
 	return mouse.writer.Encode(&irc.Message{
-		Command:  irc.BAN,
-		Params:   []string{user},
+		Command:  irc.MODE,
+		Params:   []string{channel, "+b", user},
 		Trailing: reason,
+	})
+}
+
+func (mouse *Mouse) Unban(channel, user string) error {
+	return mouse.writer.Encode(&irc.Message{
+		Command: irc.MODE,
+		Params:  []string{channel, "-b", user},
 	})
 }
