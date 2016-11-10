@@ -275,10 +275,10 @@ debug = false
 
 #### Channels
 
-Channels is an array of strings that represent channels to join once connected to the IRC server.
+Channels is an array of strings that represent channels to join once connected to the IRC server. If the channel contains a password, it should be placed after the channel name with a space in between like `#c` is in the example below.
 
 ```toml
-channels = [ "#a", "#b", "#c" ]
+channels = [ "#a", "#b", "#c password" ]
 ```
 
 #### Plugins

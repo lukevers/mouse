@@ -6,9 +6,8 @@ import (
 
 func (plugin *Plugin) join(call otto.FunctionCall) otto.Value {
 	channel, _ := call.Argument(0).ToString()
-	password, _ := call.Argument(1).ToString()
 
-	plugin.Mouse.Join(channel, password)
+	plugin.Mouse.Join(channel)
 
 	return otto.Value{}
 }
