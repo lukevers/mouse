@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gopkg.in/sorcix/irc.v1"
 	"net"
+	"storage"
 	"sync"
 	"time"
 )
@@ -12,21 +13,27 @@ import (
 type Mouse struct {
 	Config *Config
 
-	conn   net.Conn
-	reader *irc.Decoder
-	writer *irc.Encoder
-	mutex  *sync.Mutex
+	conn    net.Conn
+	reader  *irc.Decoder
+	writer  *irc.Encoder
+	mutex   *sync.Mutex
+	storage *storage.Store
 
 	data     chan *irc.Message
 	handlers []func(*Event)
 }
 
-func New(config Config) *Mouse {
-	return &Mouse{
+func New(config Config) (*Mouse, error) {
+	mouse := Mouse{
 		Config: &config,
 		data:   make(chan *irc.Message, 10),
 		mutex:  &sync.Mutex{},
 	}
+
+	var err error
+	mouse.storage, err = storage.New(config.StorageDriver, config.Storage.DSN)
+
+	return &mouse, err
 }
 
 func (mouse *Mouse) Connect() error {

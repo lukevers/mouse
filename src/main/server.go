@@ -1,5 +1,9 @@
 package main
 
+import (
+	"storage"
+)
+
 type Server struct {
 	Nick      string
 	User      string
@@ -10,10 +14,7 @@ type Server struct {
 	Reconnect bool
 	Channels  []string
 	Debug     bool
-	Plugins   map[string]struct {
-		Enabled bool
-		Folders []string
-		Pattern string
-		Events  []string
-	}
+	Plugins   map[string]Plugins
+	Storage   string
+	Store     map[string]storage.Storage
 }
