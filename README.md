@@ -560,19 +560,41 @@ event.user
 
 #### Storage
 
-TODO
+The `storage` object at the global scope cotains key functionality for using a database with plugins.
 
 ##### Put
 
-TODO
+The `storage.put` function allows your bot to save a key and value to a database. If the key does not exist, it will be created. If the key does exist, it will overwritten.
+
+```javascript
+/**
+ * @param string key
+ * @param string val
+ */
+function put(key, val)
+```
 
 ##### Get
 
-TODO
+The `storage.get` function allows your bot to get a value from a database from a key.
+
+```javascript
+/**
+ * @param string key
+ */
+function get(key)
+```
 
 ##### Delete
 
-TODO
+The `storage.delete` function allows your bot to delete a row from a database with a key.
+
+```javascript
+/**
+ * @param string key
+ */
+function delete(key)
+```
 
 ## Contributing
 
