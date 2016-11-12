@@ -14,9 +14,11 @@ type Plugin struct {
 	Config *Config
 	Mouse  *mouse.Mouse
 
+	event   *otto.Object
+	storage *otto.Object
+
 	files   []string
 	vm      *otto.Otto
-	event   *otto.Object
 	mutex   *sync.Mutex
 	watcher *fsnotify.Watcher
 }
@@ -81,13 +83,15 @@ func (plugin *Plugin) handler(event *mouse.Event) {
 		return
 	}
 
-	// Update the gloval event
+	// Update global variables
 	plugin.event.Set("command", event.Command)
 	plugin.event.Set("channel", event.Channel)
 	plugin.event.Set("message", event.Message)
 	plugin.event.Set("host", event.Host)
 	plugin.event.Set("nick", event.Nick)
 	plugin.event.Set("user", event.User)
+
+	plugin.storage.Set("event", plugin.event)
 
 	for _, file := range plugin.files {
 		plugin.mutex.Lock()
@@ -121,11 +125,18 @@ func (plugin *Plugin) load() (err error) {
 }
 
 func (plugin *Plugin) register() {
-	// Register data
+	// Register event object
 	plugin.event, _ = plugin.vm.Object("event = {}")
 	plugin.vm.Set("event", plugin.event)
 
-	// Register functions
+	// Register storage object and functions
+	plugin.storage, _ = plugin.vm.Object("storage = {}")
+	plugin.vm.Set("storage", plugin.storage)
+	plugin.storage.Set("get", plugin.get)
+	plugin.storage.Set("put", plugin.put)
+	plugin.storage.Set("delete", plugin.delete)
+
+	// Register global functions
 	plugin.vm.Set("join", plugin.join)
 	plugin.vm.Set("part", plugin.part)
 	plugin.vm.Set("cycle", plugin.cycle)

@@ -11,13 +11,13 @@ import (
 )
 
 type Mouse struct {
-	Config *Config
+	Config  *Config
+	Storage *storage.Store
 
-	conn    net.Conn
-	reader  *irc.Decoder
-	writer  *irc.Encoder
-	mutex   *sync.Mutex
-	storage *storage.Store
+	conn   net.Conn
+	reader *irc.Decoder
+	writer *irc.Encoder
+	mutex  *sync.Mutex
 
 	data     chan *irc.Message
 	handlers []func(*Event)
@@ -31,7 +31,7 @@ func New(config Config) (*Mouse, error) {
 	}
 
 	var err error
-	mouse.storage, err = storage.New(config.StorageDriver, config.Storage.DSN)
+	mouse.Storage, err = storage.New(config.StorageDriver, config.Storage.DSN)
 
 	return &mouse, err
 }

@@ -31,7 +31,7 @@ func init() {
 }
 
 func main() {
-	for _, server := range config.Servers {
+	for name, server := range config.Servers {
 		m, err := mouse.New(mouse.Config{
 			Host:          server.Host,
 			Port:          server.Port,
@@ -64,9 +64,11 @@ func main() {
 			case "javascript":
 				if plugin.Enabled {
 					m.Use(javascript.NewPlugin(m, &javascript.Config{
+						Name:       name,
 						Folders:    plugin.Folders,
 						Pattern:    plugin.Pattern,
 						EventTypes: plugin.Events,
+						Storage:    m.Storage,
 					}))
 				}
 			}
