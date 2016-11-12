@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/lukevers/viper"
 	"logger/stderr"
 	"logger/stdout"
 	"mouse"
@@ -14,17 +15,39 @@ var (
 	mice   []*mouse.Mouse
 )
 
+func init() {
+	viper.SetConfigName("mouse")
+	viper.AddConfigPath("/etc/mouse/")
+	viper.AddConfigPath("$HOME/.mouse")
+	viper.AddConfigPath(".")
+
+	if err := viper.ReadInConfig(); err != nil {
+		stderr.Fatalf("Could not read config file:", err)
+	}
+
+	if err := viper.Unmarshal(&config); err != nil {
+		stderr.Fatalf("Could not unmarshal config:", err)
+	}
+}
+
 func main() {
-	for _, server := range config.Servers {
-		m := mouse.New(mouse.Config{
-			Host:      server.Host,
-			Port:      server.Port,
-			Nick:      server.Nick,
-			User:      server.User,
-			Name:      server.Name,
-			Reconnect: server.Reconnect,
-			TLS:       server.TLS,
+	for name, server := range config.Servers {
+		m, err := mouse.New(mouse.Config{
+			Host:          server.Host,
+			Port:          server.Port,
+			Nick:          server.Nick,
+			User:          server.User,
+			Name:          server.Name,
+			Reconnect:     server.Reconnect,
+			TLS:           server.TLS,
+			Storage:       server.Store[server.Storage],
+			StorageDriver: server.Storage,
 		})
+
+		if err != nil {
+			stderr.Printf("Could not create mouse %s:", server.Host, err)
+			break
+		}
 
 		// Display every message to STDOUT
 		if server.Debug {
@@ -41,9 +64,11 @@ func main() {
 			case "javascript":
 				if plugin.Enabled {
 					m.Use(javascript.NewPlugin(m, &javascript.Config{
+						Name:       name,
 						Folders:    plugin.Folders,
 						Pattern:    plugin.Pattern,
 						EventTypes: plugin.Events,
+						Storage:    m.Storage,
 					}))
 				}
 			}

@@ -8,3 +8,6 @@
 
 # Root level config files
 /mouse.*
+
+# Databases
+/*.db

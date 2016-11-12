@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"gopkg.in/sorcix/irc.v1"
 	"net"
+	"storage"
 	"sync"
 	"time"
 )
 
 type Mouse struct {
-	Config *Config
+	Config  *Config
+	Storage *storage.Store
 
 	conn   net.Conn
 	reader *irc.Decoder
@@ -21,12 +23,17 @@ type Mouse struct {
 	handlers []func(*Event)
 }
 
-func New(config Config) *Mouse {
-	return &Mouse{
+func New(config Config) (*Mouse, error) {
+	mouse := Mouse{
 		Config: &config,
 		data:   make(chan *irc.Message, 10),
 		mutex:  &sync.Mutex{},
 	}
+
+	var err error
+	mouse.Storage, err = storage.New(config.StorageDriver, config.Storage.DSN)
+
+	return &mouse, err
 }
 
 func (mouse *Mouse) Connect() error {
@@ -192,7 +199,7 @@ func (mouse *Mouse) Deop(channel, nick string) error {
 func (mouse *Mouse) Kick(channel, user, reason string) error {
 	return mouse.writer.Encode(&irc.Message{
 		Command:  irc.KICK,
-		Params:   []string{user},
+		Params:   []string{channel, user},
 		Trailing: reason,
 	})
 }

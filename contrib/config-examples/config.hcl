@@ -8,6 +8,7 @@ servers "fc00" {
     tls = false
     reconnect = true
     debug = true
+    storage = "sqlite3"
 
     channels = [ "#lukevers", "#mouse", "#mice" ]
 
@@ -16,5 +17,21 @@ servers "fc00" {
         folders = [ "contrib/scripts/javascript/" ]
         pattern = "*.js"
         events = [ "PRIVMSG" ]
+    }
+
+    store "sqlite3" {
+        dsn = "/path/to/dbname.db"
+    }
+
+    store "mysql" {
+        dsn = "user:password@/dbname?charset=utf8&parseTime=True"
+    }
+
+    store "postgres" {
+        dsn = "host=myhost user=mouse dbname=mouse sslmode=disable password=mypassword"
+    }
+
+    store "mssql" {
+        dsn = "server=localhost;user id=sa"
     }
 }

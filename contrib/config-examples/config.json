@@ -25,7 +25,22 @@
          "port":6667,
          "reconnect":true,
          "tls":false,
-         "user":"mouse"
+         "user":"mouse",
+         "storage": "sqlite3",
+         "store": {
+            "sqlite3": {
+                "dsn": "/path/to/dbname.db"
+            },
+            "mysql": {
+                "dsn": "user:password@/dbname?charset=utf8&parseTime=True"
+            },
+            "postgres": {
+                "dsn": "host=myhost user=mouse dbname=mouse sslmode=disable password=mypassword"
+            },
+            "mssql": {
+                "dsn": "server=localhost;user id=sa"
+            }
+         }
       }
    }
 }

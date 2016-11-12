@@ -29,6 +29,13 @@ A scriptable, configuration powered IRC bot that can handle as many connnections
             2. [Folders](#folders)
             3. [Pattern](#pattern)
             4. [Events](#events)
+        11. [Storage](#storage)
+            1. [Sqlite3](#sqlite3)
+            2. [MySQL](#mysql)
+            3. [Postgres](#postgres)
+            4. [MsSQL](#mssql)
+        12. [Store](#store)
+            1. [DSN](#dsn)
 3. [Extending Mouse with plugins](#extending-mouse-with-plugins)
     1. [Language choices](#language-choices)
         1. [JavaScript](#javascript)
@@ -43,14 +50,18 @@ A scriptable, configuration powered IRC bot that can handle as many connnections
         7. [Unban](#unban)
         8. [Op](#op)
         9. [Deop](#deop)
-    3. [Global data](#global-data)
+    3. [Global variables](#global-variables)
         1. [Event](#event)
             1. [Command](#command)
             2. [Channel](#channel)
             3. [Message](#message)
             4. [Host](#host-1)
-            5. [Nick](#nick-2)
-            6. [User](#user-3)
+            5. [Nick](#nick-1)
+            6. [User](#user-1)
+        2. [Storage](#storage-1)
+            1. [Put](#put)
+            2. [Get](#get)
+            3. [Delete](#delete)
 4. [Contributing](#contributing)
 5. [License](#license)
 
@@ -318,9 +329,61 @@ Events is an array of strings that contain official IRC event types that the plu
 events = [ "PRIVMSG" ]
 ```
 
+#### Storage
+
+Storage is a string that contains the type of storage engine that should be used. Information of which storage enginges, along with how to find an example of a DSN, are available are below:
+
+```toml
+storage = "sqlite3"
+```
+
+##### Sqlite3
+
+```
+sqlite3
+```
+
+Mouse uses the [mattn/go-sqlite3](https://github.com/mattn/go-sqlite3) package for handling SQLite connections. You can find examples of DSN strings there.
+
+##### MySQL
+
+```
+mysql
+```
+
+Mouse uses the [go-sql-driver/mysql](https://github.com/go-sql-driver/mysql) package for handling MySQL connections. You can find examples of DSN strings there.
+
+##### Postgres
+
+```
+postgres
+```
+
+Mouse uses the [lib/pq](https://github.com/lib/pq) package for handling Postgres connections. You can find examples of DSN strings there.
+
+##### MsSQL
+
+```
+mssql
+```
+
+Mouse uses the [denisenkom/go-mssqldb](https://github.com/denisenkom/go-mssqldb) package for handling MsSQL connections. You can find examples of DSN strings there.
+
+#### Store
+
+All of the following configuration options should be nested in a store block named for the storage engine to be configured.
+
+##### DSN
+
+DSN is a string that contains the data source name that should be used to connect to this specific storage engine.
+
+```toml
+dsn = "mouse.db"
+```
+
 ## Extending Mouse with plugins
 
-### Language Choices
+### Language choices
 
 #### JavaScript
 
@@ -330,7 +393,7 @@ Using the embeddable JavaScript interpreter [Otto](https://github.com/robertkrim
 
 Coming soon.
 
-### Global Functions
+### Global functions
 
 #### Join
 
@@ -439,7 +502,7 @@ The `deop` function allows your bot to change the mode of a user to `-o` in a ch
 function deop(channel, user)
 ```
 
-### Global Data
+### Global variables
 
 There are variables set at the global scope that can be used in all plugins.
 
@@ -493,6 +556,44 @@ User is a string that contains the user of the user that triggered this event.
 
 ```javascript
 event.user
+```
+
+#### Storage
+
+The `storage` object at the global scope cotains key functionality for using a database with plugins.
+
+##### Put
+
+The `storage.put` function allows your bot to save a key and value to a database. If the key does not exist, it will be created. If the key does exist, it will overwritten.
+
+```javascript
+/**
+ * @param string key
+ * @param string val
+ */
+function put(key, val)
+```
+
+##### Get
+
+The `storage.get` function allows your bot to get a value from a database from a key.
+
+```javascript
+/**
+ * @param string key
+ */
+function get(key)
+```
+
+##### Delete
+
+The `storage.delete` function allows your bot to delete a row from a database with a key.
+
+```javascript
+/**
+ * @param string key
+ */
+function delete(key)
 ```
 
 ## Contributing
