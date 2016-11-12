@@ -43,7 +43,7 @@ A scriptable, configuration powered IRC bot that can handle as many connnections
         7. [Unban](#unban)
         8. [Op](#op)
         9. [Deop](#deop)
-    3. [Global data](#global-data)
+    3. [Global variables](#global-variables)
         1. [Event](#event)
             1. [Command](#command)
             2. [Channel](#channel)
@@ -320,7 +320,7 @@ events = [ "PRIVMSG" ]
 
 ## Extending Mouse with plugins
 
-### Language Choices
+### Language choices
 
 #### JavaScript
 
@@ -330,7 +330,7 @@ Using the embeddable JavaScript interpreter [Otto](https://github.com/robertkrim
 
 Coming soon.
 
-### Global Functions
+### Global functions
 
 #### Join
 
@@ -439,7 +439,7 @@ The `deop` function allows your bot to change the mode of a user to `-o` in a ch
 function deop(channel, user)
 ```
 
-### Global Data
+### Global variables
 
 There are variables set at the global scope that can be used in all plugins.
 
