@@ -14,6 +14,7 @@ type Mouse struct {
 	Config  *Config
 	Storage *storage.Store
 
+	alive  int
 	conn   net.Conn
 	reader *irc.Decoder
 	writer *irc.Encoder
@@ -23,9 +24,16 @@ type Mouse struct {
 	handlers []func(*Event)
 }
 
+const (
+	CONNECTION_WAITING = iota
+	CONNECTION_ALIVE
+	CONNECTION_DEAD
+)
+
 func New(config Config) (*Mouse, error) {
 	mouse := Mouse{
 		Config: &config,
+		alive:  CONNECTION_WAITING,
 		data:   make(chan *irc.Message, 10),
 		mutex:  &sync.Mutex{},
 	}
@@ -43,7 +51,7 @@ func (mouse *Mouse) Connect() error {
 	if mouse.Config.TLS {
 		mouse.conn, err = tls.Dial("tcp", server, mouse.Config.TLSConfig)
 	} else {
-		mouse.conn, err = net.Dial("tcp", server)
+		mouse.conn, err = net.DialTimeout("tcp", server, 10*time.Second)
 	}
 
 	if err != nil {
@@ -78,16 +86,27 @@ func (mouse *Mouse) Connect() error {
 		return err
 	}
 
+	mouse.alive = CONNECTION_ALIVE
 	go mouse.loop()
 
-	return err
+	// Join channels
+	for _, channel := range mouse.Config.Channels {
+		mouse.Join(channel)
+	}
+
+	return nil
 }
 
 func (mouse *Mouse) loop() {
 	go mouse.handle()
+	go mouse.checkConnection()
 
 	for {
-		mouse.conn.SetDeadline(time.Now().Add(300 * time.Second))
+		if mouse.alive == CONNECTION_DEAD {
+			break
+		}
+
+		mouse.conn.SetDeadline(time.Now().Add(30 * time.Second))
 		message, err := mouse.reader.Decode()
 		if err != nil {
 			break
@@ -97,7 +116,31 @@ func (mouse *Mouse) loop() {
 	}
 
 	if mouse.Config.Reconnect {
-		mouse.Connect()
+		for {
+			if err := mouse.Connect(); err != nil {
+				time.Sleep(10 * time.Second)
+			} else {
+				break
+			}
+		}
+	}
+}
+
+func (mouse *Mouse) checkConnection() {
+	for {
+		// Set the connection to waiting
+		mouse.alive = CONNECTION_WAITING
+
+		// Ping the server to check the connection
+		mouse.ping(mouse.Config.Host)
+
+		// Sleep for 15 seconds
+		time.Sleep(15 * time.Second)
+
+		if mouse.alive == CONNECTION_WAITING {
+			mouse.alive = CONNECTION_DEAD
+			break
+		}
 	}
 }
 
@@ -111,6 +154,11 @@ func (mouse *Mouse) handle() {
 		// all of the event handlers that might rely on a PING event.
 		if message.Command == irc.PING {
 			go mouse.pong(message)
+		}
+
+		// If we recieved a PONG message, our connection is alive.
+		if message.Command == irc.PONG {
+			mouse.alive = CONNECTION_ALIVE
 		}
 
 		// Sometimes there is no channel, and when that happens it means it's a
@@ -145,6 +193,13 @@ func (mouse *Mouse) handle() {
 
 		}(event)
 	}
+}
+
+func (mouse *Mouse) ping(server string) {
+	mouse.writer.Encode(&irc.Message{
+		Command: irc.PING,
+		Params:  []string{server},
+	})
 }
 
 func (mouse *Mouse) pong(message *irc.Message) {

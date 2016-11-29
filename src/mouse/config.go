@@ -12,6 +12,7 @@ type Config struct {
 	User          string
 	Name          string
 	Pass          string
+	Channels      []string
 	Reconnect     bool
 	TLS           bool
 	TLSConfig     *tls.Config

@@ -38,6 +38,7 @@ func main() {
 			Nick:          server.Nick,
 			User:          server.User,
 			Name:          server.Name,
+			Channels:      server.Channels,
 			Reconnect:     server.Reconnect,
 			TLS:           server.TLS,
 			Storage:       server.Store[server.Storage],
@@ -79,11 +80,6 @@ func main() {
 			// Connect
 			if err := m.Connect(); err != nil {
 				stderr.Printf("Could not connect to server:", err)
-			}
-
-			// Join channels
-			for _, channel := range server.Channels {
-				m.Join(channel)
 			}
 		}(server, m)
 
