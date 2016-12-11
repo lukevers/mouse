@@ -30,7 +30,7 @@ type Mouse struct {
 func New(config Config) (*Mouse, error) {
 	mouse := Mouse{
 		Config: &config,
-		alive:  CONNECTION_WAITING,
+		alive:  ConnectionWaiting,
 		data:   make(chan *irc.Message, 10),
 		mutex:  &sync.Mutex{},
 	}
@@ -85,7 +85,7 @@ func (mouse *Mouse) Connect() error {
 		return err
 	}
 
-	mouse.alive = CONNECTION_ALIVE
+	mouse.alive = ConnectionAlive
 	go mouse.loop()
 
 	// Join channels
@@ -101,7 +101,7 @@ func (mouse *Mouse) loop() {
 	go mouse.checkConnection()
 
 	for {
-		if mouse.alive == CONNECTION_DEAD {
+		if mouse.alive == ConnectionDead {
 			break
 		}
 
@@ -128,7 +128,7 @@ func (mouse *Mouse) loop() {
 func (mouse *Mouse) checkConnection() {
 	for {
 		// Set the connection to waiting
-		mouse.alive = CONNECTION_WAITING
+		mouse.alive = ConnectionWaiting
 
 		// Ping the server to check the connection
 		mouse.ping(mouse.Config.Host)
@@ -136,8 +136,8 @@ func (mouse *Mouse) checkConnection() {
 		// Sleep for 15 seconds
 		time.Sleep(15 * time.Second)
 
-		if mouse.alive == CONNECTION_WAITING {
-			mouse.alive = CONNECTION_DEAD
+		if mouse.alive == ConnectionWaiting {
+			mouse.alive = ConnectionDead
 			break
 		}
 	}
@@ -157,7 +157,7 @@ func (mouse *Mouse) handle() {
 
 		// If we recieved a PONG message, our connection is alive.
 		if message.Command == irc.PONG {
-			mouse.alive = CONNECTION_ALIVE
+			mouse.alive = ConnectionAlive
 		}
 
 		// Sometimes there is no channel, and when that happens it means it's a
