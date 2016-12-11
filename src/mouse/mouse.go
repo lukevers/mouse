@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+// A Mouse represents an IRC bot
 type Mouse struct {
 	Config  *Config
 	Storage *storage.Store
@@ -24,6 +25,8 @@ type Mouse struct {
 	handlers []func(*Event)
 }
 
+// New creates a new IRC bot. If there are any problems creating the bot, or
+// connecting to storage, this returns an error.
 func New(config Config) (*Mouse, error) {
 	mouse := Mouse{
 		Config: &config,
@@ -38,6 +41,8 @@ func New(config Config) (*Mouse, error) {
 	return &mouse, err
 }
 
+// Connect creates a new connection to the IRC server defined in the Config. If
+// there are any problems connecting, this will return an error.
 func (mouse *Mouse) Connect() error {
 	var err error
 	server := fmt.Sprintf("%s:%d", mouse.Config.Host, mouse.Config.Port)
@@ -203,10 +208,14 @@ func (mouse *Mouse) pong(message *irc.Message) {
 	})
 }
 
+// Use adds a handler function to the stack of handlers for IRC events.
 func (mouse *Mouse) Use(handler func(*Event)) {
 	mouse.handlers = append(mouse.handlers, handler)
 }
 
+// Join allows the bot to join a channel. If there is a password for the
+// channel the bot is trying to join, append it with a space after the channel
+// name.
 func (mouse *Mouse) Join(channel string) error {
 	return mouse.writer.Encode(&irc.Message{
 		Command: irc.JOIN,
@@ -214,6 +223,7 @@ func (mouse *Mouse) Join(channel string) error {
 	})
 }
 
+// Part allows the bot to part a channel.
 func (mouse *Mouse) Part(channel string) error {
 	return mouse.writer.Encode(&irc.Message{
 		Command: irc.PART,
@@ -221,6 +231,7 @@ func (mouse *Mouse) Part(channel string) error {
 	})
 }
 
+// Say allows the bot to send a PRIVMSG to a channel.
 func (mouse *Mouse) Say(channel, message string) error {
 	return mouse.writer.Encode(&irc.Message{
 		Command:  irc.PRIVMSG,
@@ -229,6 +240,8 @@ func (mouse *Mouse) Say(channel, message string) error {
 	})
 }
 
+// Op allows the bot to change the mode to +o of a user given in a specific
+// channel.
 func (mouse *Mouse) Op(channel, nick string) error {
 	return mouse.writer.Encode(&irc.Message{
 		Command:  irc.MODE,
@@ -237,6 +250,8 @@ func (mouse *Mouse) Op(channel, nick string) error {
 	})
 }
 
+// Deop allows the bot to change the mode to -o of a user given in a specific
+// channel.
 func (mouse *Mouse) Deop(channel, nick string) error {
 	return mouse.writer.Encode(&irc.Message{
 		Command:  irc.MODE,
@@ -245,6 +260,9 @@ func (mouse *Mouse) Deop(channel, nick string) error {
 	})
 }
 
+// Kick allows the bot to kick a user out of a specific channel. While you must
+// pass a parameter as a reason, if you don't want to send an actual reason,
+// you can pass an empty string.
 func (mouse *Mouse) Kick(channel, user, reason string) error {
 	return mouse.writer.Encode(&irc.Message{
 		Command:  irc.KICK,
@@ -253,6 +271,9 @@ func (mouse *Mouse) Kick(channel, user, reason string) error {
 	})
 }
 
+// Ban allows the bot to ban a user out of a specific channel. While you must
+// pass a parameter as a reason, if you don't want to send an actual reason,
+// you can pass an empty string.
 func (mouse *Mouse) Ban(channel, user, reason string) error {
 	return mouse.writer.Encode(&irc.Message{
 		Command:  irc.MODE,
@@ -261,6 +282,7 @@ func (mouse *Mouse) Ban(channel, user, reason string) error {
 	})
 }
 
+// Unban allows the bot to unban a user in a specific channel.
 func (mouse *Mouse) Unban(channel, user string) error {
 	return mouse.writer.Encode(&irc.Message{
 		Command: irc.MODE,

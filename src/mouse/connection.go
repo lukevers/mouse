@@ -1,7 +1,8 @@
 package mouse
 
+// Connection constants represent different stages of a connection.
 const (
-	CONNECTION_WAITING = iota
-	CONNECTION_ALIVE
-	CONNECTION_DEAD
+	ConnectionWaiting = iota
+	ConnectionAlive
+	ConnectionDead
 )

@@ -5,6 +5,7 @@ import (
 	"storage"
 )
 
+// A Config represents a configuration object for a Mouse
 type Config struct {
 	Host          string
 	Port          int

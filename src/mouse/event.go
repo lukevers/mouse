@@ -1,5 +1,6 @@
 package mouse
 
+// An Event represents an IRC event
 type Event struct {
 	Channel string
 	Command string
