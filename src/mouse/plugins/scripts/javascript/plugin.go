@@ -10,6 +10,7 @@ import (
 	"sync"
 )
 
+// A Plugin represents a JavaScript Plugin for a Mouse bot.
 type Plugin struct {
 	Config *Config
 	Mouse  *mouse.Mouse
@@ -23,6 +24,7 @@ type Plugin struct {
 	watcher *fsnotify.Watcher
 }
 
+// NewPlugin creates a new JavaScript Plugin for a mouse bot.
 func NewPlugin(mouse *mouse.Mouse, config *Config) func(*mouse.Event) {
 	plugin := &Plugin{
 		Config: config,

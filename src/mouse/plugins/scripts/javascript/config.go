@@ -4,6 +4,7 @@ import (
 	"storage"
 )
 
+// A Config represents a conriguration object for a JavaScript Plugin.
 type Config struct {
 	Name       string
 	Folders    []string
