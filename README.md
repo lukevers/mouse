@@ -36,7 +36,8 @@ A scriptable, configuration powered IRC bot that can handle as many connnections
             4. [MsSQL](#mssql)
         12. [Store](#store)
             1. [DSN](#dsn)
-3. [Extending Mouse with plugins](#extending-mouse-with-plugins)
+3. [API](#api)
+4. [Extending Mouse with plugins](#extending-mouse-with-plugins)
     1. [Language choices](#language-choices)
         1. [JavaScript](#javascript)
         2. [Lua](#lua)
@@ -62,8 +63,8 @@ A scriptable, configuration powered IRC bot that can handle as many connnections
             1. [Put](#put)
             2. [Get](#get)
             3. [Delete](#delete)
-4. [Contributing](#contributing)
-5. [License](#license)
+5. [Contributing](#contributing)
+6. [License](#license)
 
 ## Installing
 
@@ -380,6 +381,10 @@ DSN is a string that contains the data source name that should be used to connec
 ```toml
 dsn = "mouse.db"
 ```
+
+## API
+
+See the API on [GoDoc](https://godoc.org/github.com/lukevers/mouse/src/mouse) for the most up to date documentation.
 
 ## Extending Mouse with plugins
 
