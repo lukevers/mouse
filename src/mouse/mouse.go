@@ -24,12 +24,6 @@ type Mouse struct {
 	handlers []func(*Event)
 }
 
-const (
-	CONNECTION_WAITING = iota
-	CONNECTION_ALIVE
-	CONNECTION_DEAD
-)
-
 func New(config Config) (*Mouse, error) {
 	mouse := Mouse{
 		Config: &config,

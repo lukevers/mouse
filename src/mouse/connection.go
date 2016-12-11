@@ -1,0 +1,7 @@
+package mouse
+
+const (
+	CONNECTION_WAITING = iota
+	CONNECTION_ALIVE
+	CONNECTION_DEAD
+)
