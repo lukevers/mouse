@@ -12,7 +12,7 @@ import (
 var (
 	config *Config
 	wg     sync.WaitGroup
-	mice   []*mouse.Mouse
+	mice   map[string]*mouse.Mouse = make(map[string]*mouse.Mouse)
 )
 
 func init() {
@@ -83,7 +83,7 @@ func main() {
 			}
 		}(server, m)
 
-		mice = append(mice, m)
+		mice[name] = m
 		wg.Add(1)
 	}
 
