@@ -133,8 +133,8 @@ func (mouse *Mouse) checkConnection() {
 		// Ping the server to check the connection
 		mouse.ping(mouse.Config.Host)
 
-		// Sleep for 15 seconds
-		time.Sleep(15 * time.Second)
+		// Sleep for however long the configuration option for Ping is set for
+		time.Sleep(mouse.Config.Ping * time.Second)
 
 		if mouse.alive == ConnectionWaiting {
 			mouse.alive = ConnectionDead

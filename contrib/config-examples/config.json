@@ -24,6 +24,7 @@
          },
          "port":6667,
          "reconnect":true,
+         "ping":30,
          "tls":false,
          "user":"mouse",
          "storage": "sqlite3",

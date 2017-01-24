@@ -6,9 +6,11 @@ servers "fc00" {
     host = "irc.fc00.io"
     port = 6667
     tls = false
-    reconnect = true
     debug = true
     storage = "sqlite3"
+
+    reconnect = true
+    ping = 30
 
     channels = [ "#lukevers", "#mouse", "#mice" ]
 

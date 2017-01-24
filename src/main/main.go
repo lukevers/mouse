@@ -40,6 +40,7 @@ func main() {
 			Name:          server.Name,
 			Channels:      server.Channels,
 			Reconnect:     server.Reconnect,
+			Ping:          server.Ping,
 			TLS:           server.TLS,
 			Storage:       server.Store[server.Storage],
 			StorageDriver: server.Storage,

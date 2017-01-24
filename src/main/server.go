@@ -2,6 +2,7 @@ package main
 
 import (
 	"storage"
+	"time"
 )
 
 type Server struct {
@@ -12,6 +13,7 @@ type Server struct {
 	Port      int
 	TLS       bool
 	Reconnect bool
+	Ping      time.Duration
 	Channels  []string
 	Debug     bool
 	Plugins   map[string]Plugins

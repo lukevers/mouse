@@ -22,19 +22,20 @@ A scriptable, configuration powered IRC bot that can handle as many connnections
         5. [Port](#port)
         6. [TLS](#tls)
         7. [Reconnect](#reconnect)
-        8. [Debug](#debug)
-        9. [Channels](#channels)
-        10. [Plugins](#plugins)
+        8. [Ping](#ping)
+        9. [Debug](#debug)
+        10. [Channels](#channels)
+        11. [Plugins](#plugins)
             1. [Enabled](#enabled)
             2. [Folders](#folders)
             3. [Pattern](#pattern)
             4. [Events](#events)
-        11. [Storage](#storage)
+        12. [Storage](#storage)
             1. [Sqlite3](#sqlite3)
             2. [MySQL](#mysql)
             3. [Postgres](#postgres)
             4. [MsSQL](#mssql)
-        12. [Store](#store)
+        13. [Store](#store)
             1. [DSN](#dsn)
 3. [API](#api)
 4. [Extending Mouse with plugins](#extending-mouse-with-plugins)
@@ -276,6 +277,14 @@ Reconnect is a boolean that when `true` will try to reconnect to the server if d
 
 ```toml
 reconnect = true
+```
+
+#### Ping
+
+Ping is an integer that is the number of seconds we should ping the server for a health check.
+
+```toml
+ping = 30
 ```
 
 #### Debug
